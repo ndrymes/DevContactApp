@@ -13,5 +13,16 @@ class devServices {
         
         
     }
+    async updateDeveloper(_id,data){
+        const newContact= await Developer.findByIdAndUpdate({_id},{$set:data})
+    return newContact;
+    }
+
+    async deleteOneContact(_id){
+        console.log(_id==='5d4ac8dc4034a428d48c2c6b');
+        
+        const contact = await Developer.findByIdAndDelete(_id)
+        return contact
+    }
 }
 module.exports=devServices
