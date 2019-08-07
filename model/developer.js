@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
 
 const DevSchema =new mongoose.Schema({
     title:{
@@ -30,5 +31,13 @@ const DevSchema =new mongoose.Schema({
         trim:true,
         }
 })
+
+DevSchema.methods.generateAuthtoken = async function(){
+    const contact = this
+    const token = jwt.sign({_id:contact._id},process.env.ACCESS_KEY)
+    // agent.tokens = agent.tokens.concat({token})
+    return token
+    // await agent.save()
+    }
 const Developer = mongoose.model('Developer',DevSchema)
 module.exports = Developer;

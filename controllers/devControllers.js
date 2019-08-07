@@ -20,11 +20,13 @@ const dev=new devServices()
                       data:newContact
                   })
               }
+              const token = await newContact.generateAuthtoken()
               return res.status(201).send({
                 error: false,
                 code: 200,
                 message: 'Contact  added Succesfully',
                 data: newContact,
+                token
             })
           } catch (error) {
             console.log('This error occured', error),
