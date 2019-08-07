@@ -2,21 +2,28 @@ const jwt = require('jsonwebtoken')
 const Developer = require('../model/developer')
 const auth = async (req,res,next)=> {
     const token = req.header('Authorization');
-    if (!token) {
-        res.status(401).send({error:'Access Denied,no token provided'})
+    if (!token || (token!==req.header('Authorization'))) {
+        return res.status(401).send({error:'Access Denied,no token provided or incorrect'})
     }
-    let decoded=jwt.verify(token,'oluwole')
-    const _id = decoded._id
+    
+    
     try {
+        let decoded=jwt.verify(token,process.env.ACCESS_KEY)
+    console.log(decoded);
+    
+    if(!decoded){
+        throw new Error()
+    }
+    const _id = decoded._id
         const contact = await Developer.findOne({_id})
         req.user=contact
+        next()
     } catch (error) {
         res.status(500).send({
             error:"internal Server Error",
             code:500
         })
     }
-    l
 
 }
 module.exports = auth;

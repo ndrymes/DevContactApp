@@ -19,9 +19,11 @@ class devServices {
     }
 
     async deleteOneContact(_id){
-        console.log(_id==='5d4ac8dc4034a428d48c2c6b');
-        
         const contact = await Developer.findByIdAndDelete(_id)
+        return contact
+    }
+    async deleteAllContact(){
+        const contact = await Developer.find()
         return contact
     }
 }

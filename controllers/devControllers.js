@@ -1,4 +1,4 @@
-const devServices= require('../services/devServices')
+const devServices= require('../services/devservices')
 const dev=new devServices()
 
   class devController {
@@ -150,6 +150,32 @@ const dev=new devServices()
                 data:contact
         })
     }catch (error) {
+            res.status(500).send({
+                code:500,
+                error:false,
+                message:'internal Server error',
+                errormessage:error
+            })
+        }
+    }
+    async deleteAllcontact(req,res){
+        const contact = await dev.deleteAllContact()
+        try {
+             if (!contact || contact.length===0) {
+            return res.status(404).send({
+                code:404,
+                error:true,
+                message:"no contact found"
+            })
+        };
+        
+        res.status(200).send({
+            code:200,
+            error:false,
+            message:" All Contact deleted sucessfully",
+            data:contact
+     })
+        } catch (error) {
             res.status(500).send({
                 code:500,
                 error:false,
