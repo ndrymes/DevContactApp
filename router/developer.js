@@ -13,4 +13,10 @@ router.get('/all', (req,res)=> {
 router.get('/title', (req,res)=> {
     dev.readContactByCategories(req,res)
 })
+router.patch('/update/:id',(req,res)=>{
+    dev.updateDevContacts(req,res)
+})
+router.delete('/delete/:id',(req,res)=>{
+ dev.deleteOneContact(req,res)
+})
 module.exports = router
