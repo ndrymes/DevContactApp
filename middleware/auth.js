@@ -11,8 +11,12 @@ const auth = async (req,res,next)=> {
         const contact = await Developer.findOne({_id})
         req.user=contact
     } catch (error) {
-        
+        res.status(500).send({
+            error:"internal Server Error",
+            code:500
+        })
     }
     l
 
 }
+module.exports = auth;

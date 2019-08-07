@@ -6,7 +6,8 @@ const DevSchema =new mongoose.Schema({
     title:{
         type:String,
         required:true,
-        minlength:6
+        minlength:6,
+        trim:true
     },
     name:{
         type:String,
@@ -35,9 +36,7 @@ const DevSchema =new mongoose.Schema({
 DevSchema.methods.generateAuthtoken = async function(){
     const contact = this
     const token = jwt.sign({_id:contact._id},process.env.ACCESS_KEY)
-    // agent.tokens = agent.tokens.concat({token})
     return token
-    // await agent.save()
     }
 const Developer = mongoose.model('Developer',DevSchema)
 module.exports = Developer;

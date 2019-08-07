@@ -10,10 +10,13 @@ const dev=new devServices()
               email,
               cellphone
           }
+          if (isNaN(params.cellphone)) {
+              return res.status(400).send({error:"please only insert a number into cellphone path"})
+          }
           try {
               const newContact= await dev.addDeveloper(params)
               if (!newContact) {
-                  res.status(400).send({
+                 return res.status(400).send({
                       code:400,
                       error:true,
                       message:"Cannot add Contact, please make sure you entered the require details{name,emails} ",
@@ -37,6 +40,42 @@ const dev=new devServices()
                 })
               }
           }
+
+          async readContact(req,res){
+            try {
+              const allContact= await dev.readDeveloper()
+                if(!allContact){
+                    res.status(404).send({
+                        code:404,
+                        message:'file not found',
+                        error:true
+                    })
+                }
+                res.status(200).send({
+                    code:200,
+                    data:allContact,
+                    error:false,
+                    message:"All contact found"
+                })
+            } catch (error) {
+             console.log('errromessage',error);
+             
+            }
+          }
+
+          async readContactByCategories(req,res){
+            const {title}= req.body
+            const params = {title}
+            const contact = await dev.readDeveloperByTitle(params.title)
+            if (contact.length===0) {
+                 return res.status(404).send({
+                     code:404,
+                     error:true,
+                     message:"no contact found"
+                 })
+            }
+            res.send(contact)
+        }
       }
   
   module.exports = devController
