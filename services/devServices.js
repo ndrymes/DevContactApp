@@ -22,9 +22,5 @@ class devServices {
         const contact = await Developer.findByIdAndDelete(_id)
         return contact
     }
-    async deleteAllContact(){
-        const contact = await Developer.find()
-        return contact
-    }
 }
 module.exports=devServices
