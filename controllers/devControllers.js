@@ -2,10 +2,12 @@ const devServices= require('../services/devservices')
 const dev=new devServices()
 
   class devController {
+      //addContact helps to insert contact n the database by taking contacts from the postman/any  and calling the devServices class
+      //The Devservice class calls a method addDeveloper which primarily calls the database with the params given it.
       async addContact(req,res){
           const {name,email,cellphone}=req.body
           let {title}= req.body
-          title= title.trim()
+        
     
           const params= {
               title,
@@ -26,6 +28,7 @@ const dev=new devServices()
                       data:newContact
                   })
               }
+              //generateAuthtoken is a mongoose method that was used under the model with a mongoose
               const token = await newContact.generateAuthtoken()
               return res.status(201).send({
                 error: false,
@@ -35,7 +38,6 @@ const dev=new devServices()
                 token
             })
           } catch (error) {
-            console.log('This error occured', error),
               res.status(500).send({
                     error:true,
                     message:"internal server error",
@@ -43,6 +45,8 @@ const dev=new devServices()
                 })
               }
           }
+          //readContact helps to read all contact in the database by taking contacts from the postman/any  and calling the devServices class
+      //The Devservice class calls a method readDeveloper which primarily calls the database.
 
           async readContact(req,res){
             try {
@@ -61,11 +65,16 @@ const dev=new devServices()
                     message:"All contact found"
                 })
             } catch (error) {
-             console.log('errromessage',error);
-             
+                res.status(500).send({
+                    error:true,
+                    code:500,
+                    errormessage:error
+                })
             }
           }
 
+         // readContact helps to read  contact by categories the database by taking the title of the job as params.
+          //The Devservice class calls a method readDeveloperByTitle which primarily calls the database with the params given it.
           async readContactByCategories(req,res){
             let {title}= req.body
             title= title.trim()
@@ -98,6 +107,9 @@ const dev=new devServices()
         
             res.send(contact)
         }
+
+     //updateDevContacts helps to update contact in the database by taking contacts from the postman/any other and calling the devServices class
+      //The Devservice class calls a method updateDeveloper which primarily calls the database with the params given it.
        async updateDevContacts(req,res){
            const _id = req.params.id
            const {title,email,cellphone,name} = req.body
@@ -132,6 +144,10 @@ const dev=new devServices()
                })
            }
     }
+
+//deleteOneContact helps to delete contact from the database by taking the ObjectID as param from the postman/any other
+//  and calling the devServices class
+//The Devservice class calls a method readDeveloper which primarily calls the database with the params given it.
     async deleteOneContact(req,res){
         const _id= req.params.id
         try {
@@ -158,33 +174,7 @@ const dev=new devServices()
             })
         }
     }
-    async deleteAllcontact(req,res){
-        const contact = await dev.deleteAllContact()
-        try {
-             if (!contact || contact.length===0) {
-            return res.status(404).send({
-                code:404,
-                error:true,
-                message:"no contact found"
-            })
-        };
-        
-        res.status(200).send({
-            code:200,
-            error:false,
-            message:" All Contact deleted sucessfully",
-            data:contact
-     })
-        } catch (error) {
-            res.status(500).send({
-                code:500,
-                error:false,
-                message:'internal Server error',
-                errormessage:error
-            })
-        }
-    }
-
+    
    }
 
   
